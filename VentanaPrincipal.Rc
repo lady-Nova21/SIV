@@ -1,0 +1,29 @@
+//Registrar el icono
+200 ICON "mi_icono.ico"
+// Diálogo Principal (ID 1000)
+1000 DIALOGEX 0, 0, 440, 250
+STYLE 0x10000000 | 0x00C00000 | 0x00080000 | 0x00020000 // WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX
+CAPTION "SIV - Sistema de Inventario y Ventas"
+FONT 10, "Consolas"
+BEGIN
+    // EL MENSAJE DE BIENVENIDA PERMANENTE EN LA PARTE SUPERIOR
+       LTEXT "Bienvenido a SIV :)",       -1,  175, 10,  200, 12
+    // COLUMNA IZQUIERDA (Botones con su texto explícito)
+    PUSHBUTTON "</Gestion Productos>",    1001, 15, 20,  125, 34
+    PUSHBUTTON "</Realizar Venta>",       1002, 15, 65,  125, 34
+    PUSHBUTTON "</Consultar Inventario>", 1003, 15, 110, 125, 34
+    PUSHBUTTON "</Reportes>",             1005, 15, 155, 125, 34
+
+    // COLUMNA DERECHA (Formulario de texto)
+    LTEXT "Nombre del Producto:",  -1,  175, 25,  100, 12
+    EDITTEXT                      3001, 285, 23,  135, 14, 0x0080
+
+    LTEXT "Precio:",               -1,  175, 65,  100, 12
+    EDITTEXT                      3002, 285, 63,  135, 14, 0x0080
+
+    LTEXT "Cantidad:",             -1,  175, 105, 100, 12
+    EDITTEXT                      3003, 285, 103, 135, 14, 0x0080
+
+    // BOTÓN GUARDAR PRODUCTO UBICADO A MANO DERECHA
+    PUSHBUTTON "Guardar Producto",     1004, 290, 140, 125, 34
+END
