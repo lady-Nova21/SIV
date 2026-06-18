@@ -94,7 +94,7 @@ _OnInitDialog:
     call LoadIconA
     mov r15, rax                ; Guardamos temporalmente el puntero del icono en r15
 
-    ; 2. ASIGNAR ICONO PEQUEÑO (Para la barra de título de la ventana)
+    ; 2. ASIGNAR ICONO PEQUEÃ‘O (Para la barra de tÃ­tulo de la ventana)
     mov rcx, [rel var_hwnd]     
     mov edx, 0080h              ; WM_SETICON
     mov r8, 0                   ; ICON_SMALL (0)
