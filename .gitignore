@@ -1,0 +1,6 @@
+*.obj
+   *.res
+   *.exe
+   *.lst
+   *.map
+   *.bak
