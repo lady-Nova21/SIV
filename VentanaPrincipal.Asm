@@ -1,42 +1,29 @@
 bits 64
-
 global Start
 
-extern CreateSolidBrush
-extern DeleteObject
-extern CreateDialogParamA
-extern GetMessageA
-extern TranslateMessage
-extern DispatchMessageA
-extern ExitProcess
-extern EndDialog
-extern GetModuleHandleA
-extern SetBkMode  
-extern LoadIconA       ; Sirve para buscar un icono en la memoria 
-extern SendMessageA    ; Envia la orden a la ventana de manera inmediata
+extern CreateSolidBrush, DeleteObject, CreateDialogParamA, GetMessageA
+extern TranslateMessage, DispatchMessageA, ExitProcess, EndDialog
+extern GetModuleHandleA, SetBkMode, LoadIconA, SendMessageA, RegistrarProducto
 
 section .data
-    hBrushFondo   dq 0          
-    colorCrema    dd 00F0FFFFh  ; Color Crema (#FFFFF0) en BGR
+    hBrushFondo    dq 0            
+    colorCrema     dd 00F0FFFFh  
 
 section .bss
-    hInstance     resq 1
-    hWndDlg       resq 1
-    msg           resb 48       
-    
-    var_hwnd      resq 1
-    var_msg       resd 1
-    var_wparam    resq 1
-    var_lparam    resq 1
+    hInstance      resq 1
+    hWndDlg        resq 1
+    msg            resb 48       
+    var_hwnd       resq 1
+    var_msg        resd 1
+    var_wparam     resq 1
+    var_lparam     resq 1
 
 section .text
 Start:
-    sub rsp, 28h                 
-
+    sub rsp, 28h
     xor ecx, ecx
     call GetModuleHandleA
     mov [rel hInstance], rax
-
     mov rcx, [rel hInstance]    
     mov rdx, 1000               
     xor r8, r8                  
@@ -53,7 +40,6 @@ _LoopMensajes:
     call GetMessageA
     test rax, rax
     jz _Salir
-
     lea rcx, [rel msg]
     call TranslateMessage
     lea rcx, [rel msg]
@@ -64,6 +50,7 @@ _Salir:
     xor ecx, ecx
     call ExitProcess
 
+; --- DLGPROC PRINCIPAL ---
 DlgProc:
     mov [rel var_hwnd], rcx
     mov [rel var_msg], edx
@@ -75,63 +62,72 @@ DlgProc:
     sub rsp, 30h                
 
     mov eax, [rel var_msg]
-    cmp eax, 0110h              ; WM_INITDIALOG
+    cmp eax, 0110h
     je _OnInitDialog
-    cmp eax, 0136h              ; WM_CTLCOLORDLG
+    cmp eax, 0111h
+    je _OnCommand
+    cmp eax, 0136h
     je _OnCtlColorDlg
-    cmp eax, 0138h              ; WM_CTLCOLORSTATIC
-    je _OnCtlColorStatic
-    cmp eax, 0010h              ; WM_CLOSE
+    cmp eax, 0010h
     je _OnClose
     
     xor rax, rax                
     jmp _FinProc
 
-_OnInitDialog:
-    ; 1. CARGAR EL ICONO DEL RECURSO (ID 200)
+_OnCommand:
+    mov rax, [rel var_wparam]
+    cmp ax, 1001
+    je .abrir_registro
+    jmp _FinProc
+.abrir_registro:
     mov rcx, [rel hInstance]
-    mov rdx, 200                
-    call LoadIconA
-    mov r15, rax                ; Guardamos temporalmente el puntero del icono en r15
+    mov rdx, 2000
+    mov r8, [rel var_hwnd]
+    lea r9, [rel DlgProcRegistro]
+    call CreateDialogParamA
+    jmp _FinProc
 
-    ; 2. ASIGNAR ICONO PEQUEÑO (Para la barra de título de la ventana)
-    mov rcx, [rel var_hwnd]     
-    mov edx, 0080h              ; WM_SETICON
-    mov r8, 0                   ; ICON_SMALL (0)
-    mov r9, r15                 
-    call SendMessageA
+; --- DLGPROC REGISTRO (Corregido: Usa el RCX local) ---
+DlgProcRegistro:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 30h
+    
+    cmp edx, 0111h      ; WM_COMMAND
+    je .comando_registro
+    cmp edx, 0010h      ; WM_CLOSE
+    je .cerrar_registro
+    
+    xor rax, rax
+    jmp .fin_ret
+.comando_registro:
+    cmp r8w, 1004
+    je .llamar_guardar
+    jmp .fin_ret
+.llamar_guardar:
+    ; RCX ya contiene el HWND de esta ventana secundaria
+    call RegistrarProducto
+    mov rax, 1
+    jmp .fin_ret
+.cerrar_registro:
+    ; RCX ya contiene el HWND de esta ventana secundaria
+    call EndDialog
+    mov rax, 1
+.fin_ret:
+    add rsp, 30h
+    pop rbp
+    ret
 
-    ; 3. ASIGNAR ICONO GRANDE (Para la barra de tareas / Alt+Tab)
-    mov rcx, [rel var_hwnd]     
-    mov edx, 0080h              ; WM_SETICON
-    mov r8, 1                   ; ICON_BIG (1)
-    mov r9, r15                 
-    call SendMessageA
-
-    ; 4. CONFIGURAR EL FONDO CREMA
-    mov ecx, [rel colorCrema]        
-    call CreateSolidBrush
-    mov [rel hBrushFondo], rax  
-    mov rax, 1                  
+_OnInitDialog:
+    mov rax, 1
     jmp _FinProc
 
 _OnCtlColorDlg:
     mov rax, [rel hBrushFondo]   
     jmp _FinProc
 
-_OnCtlColorStatic:
-    mov rcx, [rel var_wparam]                 
-    mov edx, 1                  ; BKMODE_TRANSPARENT
-    call SetBkMode              
-    mov rax, [rel hBrushFondo]  
-    jmp _FinProc
-
 _OnClose:
-    mov rcx, [rel hBrushFondo]
-    call DeleteObject
-
     mov rcx, [rel var_hwnd]
-    xor rdx, rdx
     call EndDialog
     xor ecx, ecx
     call ExitProcess
