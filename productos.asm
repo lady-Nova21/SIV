@@ -13,36 +13,45 @@ section .bss
 
 section .text
 RegistrarProducto:
+    ; Configuración de Stack Frame
     push rbp
     mov rbp, rsp
-    sub rsp, 40h
+    sub rsp, 40h         ; Reservar espacio (Shadow space requerido por Win64)
+    push r14             ; Guardamos r14 para preservarlo
 
-    ; Extraer textos de los cuadros (IDs 3001, 3002, 3003)
-    mov rcx, [rbp + 16] ; Recibe el hwnd pasado por el call
-    mov rdx, 3001
+    ; Al entrar aquí, RCX contiene el HWND de la ventana
+    mov r14, rcx         ; Guardamos el HWND en r14 para usarlo más adelante
+
+    ; Extraer texto: Nombre del Producto (ID 3001)
+    mov rcx, r14         ; HWND
+    mov rdx, 3001        ; ID
     lea r8, [rel nombreProd]
     mov r9, 256
     call GetDlgItemTextA
 
-    mov rcx, [rbp + 16]
+    ; Extraer texto: Precio (ID 3002)
+    mov rcx, r14
     mov rdx, 3002
     lea r8, [rel precioProd]
     mov r9, 32
     call GetDlgItemTextA
 
-    mov rcx, [rbp + 16]
+    ; Extraer texto: Cantidad (ID 3003)
+    mov rcx, r14
     mov rdx, 3003
     lea r8, [rel cantProd]
     mov r9, 32
     call GetDlgItemTextA
 
-    ; Mostrar mensaje
-    mov rcx, [rbp + 16]
+    ; Mostrar mensaje de éxito
+    mov rcx, r14         ; HWND como dueño del MessageBox
     lea rdx, [rel msgExito]
     lea r8, [rel tituloMsg]
-    mov r9, 0
+    mov r9, 0            ; MB_OK
     call MessageBoxA
 
+    ; Restaurar y salir
+    pop r14              ; Recuperamos r14
     add rsp, 40h
     pop rbp
     ret

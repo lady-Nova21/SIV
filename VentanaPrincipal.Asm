@@ -50,6 +50,7 @@ _Salir:
     xor ecx, ecx
     call ExitProcess
 
+; --- DLGPROC PRINCIPAL ---
 DlgProc:
     mov [rel var_hwnd], rcx
     mov [rel var_msg], edx
@@ -61,66 +62,72 @@ DlgProc:
     sub rsp, 30h                
 
     mov eax, [rel var_msg]
-    cmp eax, 0110h              ; WM_INITDIALOG
+    cmp eax, 0110h
     je _OnInitDialog
-    cmp eax, 0111h              ; WM_COMMAND
+    cmp eax, 0111h
     je _OnCommand
-    cmp eax, 0136h              ; WM_CTLCOLORDLG
+    cmp eax, 0136h
     je _OnCtlColorDlg
-    cmp eax, 0138h              ; WM_CTLCOLORSTATIC
-    je _OnCtlColorStatic
-    cmp eax, 0010h              ; WM_CLOSE
+    cmp eax, 0010h
     je _OnClose
     
     xor rax, rax                
     jmp _FinProc
 
-_OnInitDialog:
+_OnCommand:
+    mov rax, [rel var_wparam]
+    cmp ax, 1001
+    je .abrir_registro
+    jmp _FinProc
+.abrir_registro:
     mov rcx, [rel hInstance]
-    mov rdx, 200                
-    call LoadIconA
-    mov r15, rax
-    mov rcx, [rel var_hwnd]     
-    mov edx, 0080h              
-    mov r8, 0                   
-    mov r9, r15                 
-    call SendMessageA
-    mov rcx, [rel var_hwnd]     
-    mov edx, 0080h              
-    mov r8, 1                   
-    mov r9, r15                 
-    call SendMessageA
-    mov ecx, [rel colorCrema]         
-    call CreateSolidBrush
-    mov [rel hBrushFondo], rax  
-    mov rax, 1                  
+    mov rdx, 2000
+    mov r8, [rel var_hwnd]
+    lea r9, [rel DlgProcRegistro]
+    call CreateDialogParamA
     jmp _FinProc
 
-_OnCommand:
-    cmp r8d, 1004               ; ID del botón Guardar
-    je .llamar_registro
-    jmp _FinProc
-.llamar_registro:
-    mov rcx, [rel var_hwnd]
+; --- DLGPROC REGISTRO (Corregido: Usa el RCX local) ---
+DlgProcRegistro:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 30h
+    
+    cmp edx, 0111h      ; WM_COMMAND
+    je .comando_registro
+    cmp edx, 0010h      ; WM_CLOSE
+    je .cerrar_registro
+    
+    xor rax, rax
+    jmp .fin_ret
+.comando_registro:
+    cmp r8w, 1004
+    je .llamar_guardar
+    jmp .fin_ret
+.llamar_guardar:
+    ; RCX ya contiene el HWND de esta ventana secundaria
     call RegistrarProducto
+    mov rax, 1
+    jmp .fin_ret
+.cerrar_registro:
+    ; RCX ya contiene el HWND de esta ventana secundaria
+    call EndDialog
+    mov rax, 1
+.fin_ret:
+    add rsp, 30h
+    pop rbp
+    ret
+
+_OnInitDialog:
+    mov rax, 1
     jmp _FinProc
 
 _OnCtlColorDlg:
     mov rax, [rel hBrushFondo]   
     jmp _FinProc
 
-_OnCtlColorStatic:
-    mov rcx, [rel var_wparam]              
-    mov edx, 1                  
-    call SetBkMode              
-    mov rax, [rel hBrushFondo]  
-    jmp _FinProc
-
 _OnClose:
-    mov rcx, [rel hBrushFondo]
-    call DeleteObject
     mov rcx, [rel var_hwnd]
-    xor rdx, rdx
     call EndDialog
     xor ecx, ecx
     call ExitProcess
