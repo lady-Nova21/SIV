@@ -1,0 +1,20 @@
+#define IDC_STATIC -1
+
+/* ID cambiado de 1000 a 2001 para no chocar con VentanaPrincipal */
+2001 DIALOGEX 0, 0, 250, 200
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "VENTAS - Realizar Venta"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Codigo:",   IDC_STATIC, 20, 20,  50, 10
+    EDITTEXT        3001,        80, 18,  130, 12, 0x2000
+
+    LTEXT           "Nombre:",   IDC_STATIC, 20, 45,  50, 10
+    EDITTEXT        3002,        80, 43,  130, 12
+
+    LTEXT           "Precio:",   IDC_STATIC, 20, 70,  50, 10
+    EDITTEXT        3003,        80, 68,  130, 12
+
+    PUSHBUTTON      "Guardar Venta", 2001, 80, 110, 100, 20
+    PUSHBUTTON      "Cerrar",        9001, 80, 140, 100, 20
+END

@@ -1,0 +1,114 @@
+[Project]
+Assembler=nasm
+Type=Win32 App
+Description=VentanaVentas
+Backup=$P\Bak\
+Group=1
+GroupExpand=1
+Debug=0
+[Files]
+1=VentanaPrincipal.Asm
+2=VentanaVentas.Inc
+3=VentanaPrincipal.Rc
+[MakeFiles]
+0=VentanaPrincipal.rap
+1=VentanaPrincipal.rc
+2=VentanaPrincipal.asm
+3=VentanaPrincipal.obj
+4=VentanaPrincipal.res
+5=VentanaPrincipal.exe
+6=VentanaPrincipal.def
+7=VentanaPrincipal.dll
+8=VentanaPrincipal.txt
+9=VentanaPrincipal.lib
+10=VentanaPrincipal.mak
+11=VentanaPrincipal.hla
+[MakeDef]
+Menu=1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0
+1=4,0,C:\NASM\Bin\Gorc\GoRC.exe /r,1
+2=3,0,C:\NASM\Bin\nasmw.exe -fwin64 -o VentanaPrincipal.obj,2
+3=5,0,C:\Users\Admin\Desktop\Proyecto_TBN\Golink\GoLink.exe /entry:Start /fo VentanaPrincipal.exe VentanaPrincipal.obj VentanaPrincipal.res kernel32.dll user32.dll
+4=0,0,,5
+5=rsrc.obj,O,$B\CVTRES,rsrc.res
+6=*.obj,0,C:\NASM\Bin\nasmw.exe -fwin64,*.asm
+7=0,0,\OllyDbg\OllyDbg,5
+11=4,O,$B\GORC,1
+12=3,O,$B\NASMW -fobj,2
+13=5,O,$B\ALINK -oPE -o $5,3,$L\win32.lib,4
+14=0,0,,5
+15=rsrc.obj,O,$B\CVTRES,rsrc.res
+16=*.obj,O,$B\NASMW -fobj,*.asm
+17=0,0,\OllyDbg\OllyDbg,5
+[Group]
+Group=Added files,Assembly,Resources,Misc,Modules
+1=2
+2=2
+3=3
+[AutoLoad]
+AutoLoad=1
+[RADebugBP]
+1=
+0=
+[Collapse]
+1=
+[Size]
+1=0,0,0,0,480
+[VersionControl]
+Settings=1246
+Milestones=129
+MilestoneEvery=10
+MilestoneEveryCurrent=0
+MilestoneOnBuild=0.0.0.0
+MilestoneOnTime=2
+MilestoneOnDate=0
+MilestoneOnDateWhen=1
+MilestoneOnDateStatus=0
+MilestoneOnDateDate=23
+MilestoneOnDateTimeYear=2026
+MilestoneOnDateTimeMonth=6
+MilestoneOnDateTimeDate=14
+MilestoneOnDateTimeHour=12
+MilestoneOnDateTimeMin=25
+MilestoneOnDateTimeSec=41
+MilestoneOnDateTimeStatus=0
+BackupLocation=C:\Users\Admin\Desktop\Proyecto_TBN\RadASM-2.2.2.4-FullPackage\Nasm\Projects\VCBackups\
+CompressionLevel=0
+DefaultComment=Project $N, $Z, Backup Created On $D At $T.
+ExcludeExt1=\
+ExcludeExt2=\
+ExcludeExt3=\
+ExcludeExt4=\
+FileVerLength=4
+FileVer2Range=0
+FileVer3Range=0
+FileVer4Range=0
+ProductVerLength=4
+ProductVer2Range=0
+ProductVer3Range=0
+ProductVer4Range=0
+[Colref]
+0=00FFFFFF
+1=00FFFFFF
+2=00FFFFFF
+3=00FFFFFF
+4=00FFFFFF
+5=00FFFFFF
+6=00FFFFFF
+7=00FFFFFF
+[PTimer]
+PTimer=186228095
+[GroupExpand]
+GroupExpand=0,1,0,0,0,0
+[BookMark]
+0=
+1=
+2=
+3=
+4=
+5=
+6=
+7=
+8=
+9=
+[BreakPoint]
+0=

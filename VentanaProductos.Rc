@@ -1,0 +1,24 @@
+/* ============================================================
+   Ventana Productos - Gestionar Producto
+   ============================================================ */
+2004 DIALOG 0, 0, 220, 150
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Gestionar Producto"
+FONT 9, "MS Shell Dlg"
+BEGIN
+    LTEXT      "Codigo:",   -1, 10, 16, 50, 12
+    EDITTEXT   3004,        70, 14, 130, 14
+
+    LTEXT      "Nombre:",   -1, 10, 36, 50, 12
+    EDITTEXT   3001,        70, 34, 130, 14
+
+    LTEXT      "Precio:",   -1, 10, 56, 50, 12
+    EDITTEXT   3002,        70, 54, 130, 14
+
+    LTEXT      "Cantidad:", -1, 10, 76, 50, 12
+    EDITTEXT   3003,        70, 74, 130, 14
+
+    PUSHBUTTON "Guardar",   4001, 35, 105, 60, 25
+    PUSHBUTTON "Cerrar",    9001, 115, 105, 60, 25
+END
+

@@ -1,0 +1,63 @@
+200 ICON "mi_icono.ico" 
+ 
+1000 DIALOG 0, 0, 280, 190 
+CAPTION "SIV - Sistema de Inventario y Ventas" 
+FONT 9, "Courier New" 
+BEGIN 
+    LTEXT "Bienvenido a SIV :)", -1, 120, 10, 150, 10 
+    PUSHBUTTON "</Gestion Productos>", 1001, 10, 30, 95, 32 
+    PUSHBUTTON "</Realizar Venta>", 1002, 10, 72, 95, 32 
+    PUSHBUTTON "</Consultar Inventario>", 1003, 10, 114, 95, 32 
+    PUSHBUTTON "</Reportes>", 1005, 10, 156, 95, 32 
+END 
+ 
+2004 DIALOG 0, 0, 240, 120 
+CAPTION "Gestion de Productos" 
+FONT 9, "Courier New" 
+BEGIN 
+    LTEXT "Codigo:", -1, 15, 12, 45, 10 
+    EDITTEXT 3001, 70, 10, 140, 12 
+    LTEXT "Nombre:", -1, 15, 30, 45, 10 
+    EDITTEXT 3002, 70, 28, 140, 12 
+    LTEXT "Precio:", -1, 15, 48, 45, 10 
+    EDITTEXT 3003, 70, 46, 60, 12 
+    LTEXT "Stock:", -1, 15, 66, 45, 10 
+    EDITTEXT 3004, 70, 64, 60, 12 
+    PUSHBUTTON "Guardar Producto", 4001, 40, 90, 85, 16 
+    PUSHBUTTON "Cerrar", 9001, 155, 90, 55, 16 
+END 
+ 
+2001 DIALOG 0, 0, 260, 200 
+CAPTION "Realizar Venta" 
+FONT 9, "Courier New" 
+BEGIN 
+    LTEXT "Codigo:", -1, 15, 12, 45, 10 
+    EDITTEXT 3010, 70, 10, 100, 12 
+    LTEXT "Cantidad:", -1, 15, 30, 45, 10 
+    EDITTEXT 3011, 70, 28, 60, 12 
+    PUSHBUTTON "Agregar", 2001, 180, 10, 55, 14 
+    PUSHBUTTON "Limpiar", 2002, 180, 28, 55, 14 
+    LISTBOX 5010, 10, 50, 240, 100, LBS_NOTIFY 
+    LTEXT "Total: Bs. 0.00", 7001, 10, 158, 140, 10 
+    PUSHBUTTON "Confirmar Venta", 2003, 10, 175, 90, 16 
+    PUSHBUTTON "Cerrar", 9001, 190, 175, 55, 16 
+END 
+ 
+2002 DIALOG 0, 0, 260, 160 
+CAPTION "Consultar Inventario" 
+FONT 9, "Courier New" 
+BEGIN 
+    LTEXT "Nombre                Precio    Stock", -1, 10, 8, 240, 10 
+    LISTBOX 5001, 10, 20, 240, 110, LBS_NOTIFY 
+    PUSHBUTTON "Cerrar", 9001, 100, 138, 55, 16 
+END 
+ 
+2003 DIALOG 0, 0, 260, 160 
+CAPTION "Reportes de Ventas" 
+FONT 9, "Courier New" 
+BEGIN 
+    LTEXT "Nombre             Cantidad   Total", -1, 10, 8, 240, 10 
+    LISTBOX 6001, 10, 20, 240, 100, LBS_NOTIFY 
+    LTEXT "Total General: Bs. 0.00", 7002, 10, 128, 180, 10 
+    PUSHBUTTON "Cerrar", 9001, 100, 138, 55, 16 
+END 

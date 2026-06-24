@@ -1,0 +1,11 @@
+/* ============================================================
+   Ventana Reportes - placeholder "Hola Mundo"
+   ============================================================ */
+2003 DIALOG 0, 0, 200, 100
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Reportes"
+FONT 9, "MS Shell Dlg"
+BEGIN
+    LTEXT     "Hola Mundo - Reportes", -1, 20, 20, 160, 20
+    PUSHBUTTON "Cerrar", 9001, 70, 60, 60, 25
+END
